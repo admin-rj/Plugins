@@ -1,0 +1,119 @@
+<!-- Popup HTML -->
+<div class="popup-container">
+  <span class="popup-button">When Will My Buckets Arrive</span>
+  <div class="popup-overlay" aria-hidden="true">
+    <div class="popup-content">
+      <span class="popup-close">&times;</span>
+      <strong style="font-size: 18px; text-align: left; display: block;">Chlorine Warehouse FedEx Ground Transit Info Maps</strong>
+      <img 
+        src="https://cdn.shopify.com/s/files/1/0899/0874/0406/files/Chlorine_Warehouse_FedEx_Ground_Service_Maps.jpg?v=1737040848" 
+        alt="FedEx Ground Transit Info Map" 
+        class="popup-image">
+      <br>
+      <strong style="font-size: 18px; text-align: left; display: block;">Important Shipping Note:</strong>
+      <p style="font-size: 16px; margin-top: 5px; text-align: left;">Some tablets may arrive cracked due to shipping but will still be fully effective.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Popup CSS -->
+<style>
+.popup-button {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  color: #0E1B4D;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.popup-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+}
+
+.popup-overlay.active {
+  display: flex;
+}
+
+.popup-content {
+  position: relative;
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  width: 40%;
+  max-width: 40%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: left;
+}
+
+.popup-image {
+  width: 100%;
+  display: block;
+  margin: 0 auto 10px auto;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.popup-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #2C3E6E;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+  .popup-content {
+    width: 90%;
+    max-width: 100%;
+    padding: 15px;
+  }
+  .popup-image {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+  }
+}
+</style>
+
+<!-- Popup JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const popupButton = document.querySelector('.popup-button');
+  const popupOverlay = document.querySelector('.popup-overlay');
+  const popupClose = document.querySelector('.popup-close');
+  const popupImage = document.querySelector('.popup-image');
+
+  // Show popup only when button is clicked
+  popupButton.addEventListener('click', function() {
+    popupOverlay.classList.add('active');
+  });
+
+  popupClose.addEventListener('click', function() {
+    popupOverlay.classList.remove('active');
+  });
+
+  popupOverlay.addEventListener('click', function(e) {
+    if (e.target === popupOverlay) {
+      popupOverlay.classList.remove('active');
+    }
+  });
+
+  // Open the image in a new tab on click
+  popupImage.addEventListener('click', function() {
+    const imageWindow = window.open(popupImage.src, '_blank');
+    imageWindow.focus();
+  });
+});
+</script>
