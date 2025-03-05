@@ -49,15 +49,15 @@
   <!-- JavaScript to Add Responsive Button -->
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      const targetVariantId = "51124559905078"; // Variant ID to show the button
+      const targetVariantId = "Variant_ID"; // Variant ID to show the button
       let button;
 
       // Function to add the button
       function addButton() {
         if (!button) {
           button = document.createElement("a");
-          button.textContent = "SAVE ON 4+ 50 LB BUCKETS";
-          button.href = "https://www.chlorinewarehouse.com/pages/wholesale-order";
+          button.textContent = "Button_Text";
+          button.href = "Button_URL";
           button.classList.add("custom-button");
 
           const productContainer = document.querySelector(".product-single__description");
