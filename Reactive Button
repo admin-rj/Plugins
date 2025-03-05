@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsive Button</title>
+  <style>
+    .custom-button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #A92323;
+      color: #FFFFFF !important; /* Force font color to white */
+      text-align: center;
+      text-decoration: none;
+      border-radius: 16px;
+      font-size: 22px; /* Default font size for larger screens */
+      font-weight: bold;
+      font-family: 'Montserrat', sans-serif;
+      border-style: solid;
+      border-color: #0E1B4D;
+      border-width: 0 5px 5px 0; /* Custom border sizes */
+      position: relative;
+      transition: background-color 0.3s, border-color 0.3s;
+    }
+    .custom-button:hover {
+      background-color: #0E1B4D; /* Changes background color on hover */
+      border-color: #0E1B4D;    /* Changes border color to match background */
+      color: #FFFFFF !important; /* Force font color to remain white on hover */
+    }
+    .custom-button.hidden {
+      display: none;
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+      .custom-button {
+        font-size: 19px; /* Font size for smaller screens */
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Main Content -->
+  <div class="product-single__description">
+  </div>
+
+  <!-- JavaScript to Add Responsive Button -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const targetVariantId = "51124559905078"; // Variant ID to show the button
+      let button;
+
+      // Function to add the button
+      function addButton() {
+        if (!button) {
+          button = document.createElement("a");
+          button.textContent = "SAVE ON 4+ 50 LB BUCKETS";
+          button.href = "https://www.chlorinewarehouse.com/pages/wholesale-order";
+          button.classList.add("custom-button");
+
+          const productContainer = document.querySelector(".product-single__description");
+          if (productContainer) {
+            productContainer.appendChild(button);
+          }
+        }
+      }
+
+      // Function to check the current variant
+      function checkVariant() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const variant = urlParams.get("variant");
+
+        if (variant === targetVariantId) {
+          if (button) {
+            button.classList.remove("hidden");
+          } else {
+            addButton();
+          }
+        } else {
+          if (button) {
+            button.classList.add("hidden");
+          }
+        }
+      }
+
+      // Observe URL changes dynamically
+      const observer = new MutationObserver(() => {
+        checkVariant();
+      });
+
+      // Target element for observation (Shopify's variant selector usually changes hidden inputs or URLs)
+      const targetNode = document.body; // Observe changes in the body
+
+      observer.observe(targetNode, {
+        childList: true,
+        subtree: true,
+      });
+
+      // Initial check on page load
+      checkVariant();
+    });
+  </script>
+
+</body>
+</html>
