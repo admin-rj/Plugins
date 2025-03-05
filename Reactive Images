@@ -64,54 +64,54 @@
 
   <script>
     const urlVariants = {
-      "51124559839542": [
+      "Variant_ID_No_1": [
         {
-          src: "https://cdn.shopify.com/s/files/1/0899/0874/0406/files/Chlorine_Warehouse_3_Inch_Chlorine_Tablets_15_Lb_CHL-15LB-TAB.png?v=1737762445",
-          alt: "3-inch chlorine tablets - 15 Lbs",
+          src: "Variant_Image_Main_URL_1",
+          alt: "Variant_Alt_Text_1",
         },
       ],
-      "51124559872310": [
+      "Variant_ID_No_2": [
         {
-          src: "https://cdn.shopify.com/s/files/1/0899/0874/0406/files/Chlorine_Warehouse_3_Inch_Chlorine_Tablets_25_Lb_CHL-25LB-TAB.png?v=1737762426",
-          alt: "3-inch chlorine tablets - 25 Lbs",
+          src: "Variant_Image_Main_URL_2",
+          alt: "Variant_Alt_Text_2",
         },
       ],
-      "51124559905078": [
+      "Variant_ID_No_3": [
         {
-          src: "https://cdn.shopify.com/s/files/1/0899/0874/0406/files/Chlorine_Warehouse_3_Inch_Chlorine_Tablets_50_Lb_CHL-50LB-TAB.png?v=1737762408",
-          alt: "3-inch chlorine tablets - 50 Lbs",
+          src: "Variant_Image_Main_URL_3",
+          alt: "Variant_Alt_Text_3",
         },
       ],
-      "51633325769014": [
+      "Variant_ID_No_4": [
         {
-          src: "https://cdn.shopify.com/s/files/1/0899/0874/0406/files/Chlorine_Warehouse_3_Inch_Chlorine_Tablets_1200_Lb_CHL-1200LB-TAB.png?v=1740568740",
-          alt: "3-inch chlorine tablets - 1200 Lbs",
+          src: "Variant_Image_Main_URL_4",
+          alt: "Variant_Alt_Text_4",
         },
       ],
-      "51633350410550": [
+      "Variant_ID_No_5": [
         {
-          src: "https://cdn.shopify.com/s/files/1/0899/0874/0406/files/Chlorine_Warehouse_3_Inch_Chlorine_Tablets_2400_Lb_CHL-2400LB-TAB.png?v=1740569962",
-          alt: "3-inch chlorine tablets - 2400 Lbs",
+          src: "Variant_Image_Main_URL_5",
+          alt: "Variant_Alt_Text_4",
         },
       ]
     };
 
     const commonImages = [
       {
-        src: "https://cdn.shopify.com/s/files/1/0899/0874/0406/files/Chlorine_Warehouse_Size_Guide.jpg?v=1737762256",
-        alt: "Chlorine warehouse size guide",
+        src: "Common_Image_Main_URL_1",
+        alt: "Common_Alt_Text_1",
       },
       {
-        src: "https://cdn.shopify.com/s/files/1/0899/0874/0406/files/Chlorine_Warehouse_Features.png?v=1737762570",
-        alt: "Why choose Chlorine Warehouse",
+        src: "Common_Image_Main_URL_2",
+        alt: "Common_Alt_Text_2",
       },
       {
-        src: "https://cdn.shopify.com/s/files/1/0899/0874/0406/files/Chlorine_Warehouse_Product_Features.png?v=1737762598",
-        alt: "Chlorine Warehouse product features",
+        src: "Common_Image_Main_URL_3",
+        alt: "Common_Alt_Text_3",
       },
       {
-        src: "https://cdn.shopify.com/s/files/1/0899/0874/0406/files/Chlorine_Warehouse_Key_Features.png?v=1737762621",
-        alt: "Chlorine Warehouse key features",
+        src: "Common_Image_Main_URL_4",
+        alt: "Common_Alt_Text_4",
       },
     ];
 
