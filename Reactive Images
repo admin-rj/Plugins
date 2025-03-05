@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Carousel</title>
+  <style>
+    .carousel-container {
+      max-width: 800px;
+      margin: auto;
+      text-align: center;
+    }
+    .carousel-container .featured-image {
+      width: 100%;
+      max-height: 600px;
+      object-fit: contain;
+      cursor: pointer;
+    }
+    .carousel-container .thumbnail-container {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .carousel-container .thumbnail {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      cursor: pointer;
+    }
+    .carousel-container .thumbnail.active {
+      outline: none;
+    }
+    /* Fullscreen image view styling */
+    .fullscreen-view {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .fullscreen-view img {
+      max-width: 90%;
+      max-height: 90%;
+      cursor: zoom-out;
+    }
+  </style>
+</head>
+<body>
+  <div class="carousel-container">
+    <img id="featuredImage" class="featured-image" src="" alt="Product Image" aria-live="polite">
+    <div class="thumbnail-container" id="thumbnailContainer"></div>
+  </div>
+
+  <!-- Fullscreen view -->
+  <div class="fullscreen-view" id="fullscreenView">
+    <img src="" alt="Fullscreen Image" id="fullscreenImage">
+  </div>
+
+  <script>
+    const urlVariants = {
+      "51124559839542": [
+        {
+          src: "https://cdn.shopify.com/s/files/1/0899/0874/0406/files/Chlorine_Warehouse_3_Inch_Chlorine_Tablets_15_Lb_CHL-15LB-TAB.png?v=1737762445",
+          alt: "3-inch chlorine tablets - 15 Lbs",
+        },
+      ],
+      "51124559872310": [
+        {
+          src: "https://cdn.shopify.com/s/files/1/0899/0874/0406/files/Chlorine_Warehouse_3_Inch_Chlorine_Tablets_25_Lb_CHL-25LB-TAB.png?v=1737762426",
+          alt: "3-inch chlorine tablets - 25 Lbs",
+        },
+      ],
+      "51124559905078": [
+        {
+          src: "https://cdn.shopify.com/s/files/1/0899/0874/0406/files/Chlorine_Warehouse_3_Inch_Chlorine_Tablets_50_Lb_CHL-50LB-TAB.png?v=1737762408",
+          alt: "3-inch chlorine tablets - 50 Lbs",
+        },
+      ],
+      "51633325769014": [
+        {
+          src: "https://cdn.shopify.com/s/files/1/0899/0874/0406/files/Chlorine_Warehouse_3_Inch_Chlorine_Tablets_1200_Lb_CHL-1200LB-TAB.png?v=1740568740",
+          alt: "3-inch chlorine tablets - 1200 Lbs",
+        },
+      ],
+      "51633350410550": [
+        {
+          src: "https://cdn.shopify.com/s/files/1/0899/0874/0406/files/Chlorine_Warehouse_3_Inch_Chlorine_Tablets_2400_Lb_CHL-2400LB-TAB.png?v=1740569962",
+          alt: "3-inch chlorine tablets - 2400 Lbs",
+        },
+      ]
+    };
+
+    const commonImages = [
+      {
+        src: "https://cdn.shopify.com/s/files/1/0899/0874/0406/files/Chlorine_Warehouse_Size_Guide.jpg?v=1737762256",
+        alt: "Chlorine warehouse size guide",
+      },
+      {
+        src: "https://cdn.shopify.com/s/files/1/0899/0874/0406/files/Chlorine_Warehouse_Features.png?v=1737762570",
+        alt: "Why choose Chlorine Warehouse",
+      },
+      {
+        src: "https://cdn.shopify.com/s/files/1/0899/0874/0406/files/Chlorine_Warehouse_Product_Features.png?v=1737762598",
+        alt: "Chlorine Warehouse product features",
+      },
+      {
+        src: "https://cdn.shopify.com/s/files/1/0899/0874/0406/files/Chlorine_Warehouse_Key_Features.png?v=1737762621",
+        alt: "Chlorine Warehouse key features",
+      },
+    ];
+
+    const featuredImage = document.getElementById('featuredImage');
+    const thumbnailContainer = document.getElementById('thumbnailContainer');
+    const fullscreenView = document.getElementById('fullscreenView');
+    const fullscreenImage = document.getElementById('fullscreenImage');
+
+    function getVariantFromURL() {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get('variant') || "51124559839542"; // Default to 15 lb variant
+    }
+
+    function populateCarousel() {
+      const variant = getVariantFromURL();
+      const images = urlVariants[variant] || [];
+      const allImages = images.length ? [...images, ...commonImages] : [...commonImages];
+
+      thumbnailContainer.innerHTML = ''; // Clear existing thumbnails
+      if (allImages.length > 0) {
+        featuredImage.src = allImages[0].src;
+        featuredImage.alt = allImages[0].alt;
+        allImages.forEach((image, index) => {
+          const thumbnail = document.createElement('img');
+          thumbnail.src = image.src;
+          thumbnail.alt = image.alt;
+          thumbnail.classList.add('thumbnail');
+          if (index === 0) thumbnail.classList.add('active');
+          thumbnail.addEventListener('click', () => updateFeaturedImage(image, index));
+          thumbnailContainer.appendChild(thumbnail);
+        });
+      }
+    }
+
+    function updateFeaturedImage(image, index) {
+      featuredImage.src = image.src;
+      featuredImage.alt = image.alt;
+      document.querySelectorAll('.thumbnail').forEach((thumb, idx) => {
+        thumb.classList.toggle('active', idx === index);
+      });
+    }
+
+    function watchURLChange() {
+      let currentURL = window.location.href;
+      setInterval(() => {
+        if (window.location.href !== currentURL) {
+          currentURL = window.location.href;
+          populateCarousel();
+        }
+      }, 500);
+    }
+
+    // Show image in fullscreen on featured image click
+    featuredImage.addEventListener('click', () => {
+      fullscreenImage.src = featuredImage.src;
+      fullscreenImage.alt = featuredImage.alt;
+      fullscreenView.style.display = 'flex';
+    });
+
+    // Hide fullscreen view when clicked
+    fullscreenView.addEventListener('click', () => {
+      fullscreenView.style.display = 'none';
+    });
+
+    populateCarousel();
+    watchURLChange();
+  </script>
+</body>
+</html>
