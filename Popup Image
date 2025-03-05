@@ -4,14 +4,14 @@
   <div class="popup-overlay" aria-hidden="true">
     <div class="popup-content">
       <span class="popup-close">&times;</span>
-      <strong style="font-size: 18px; text-align: left; display: block;">Chlorine Warehouse FedEx Ground Transit Info Maps</strong>
+      <strong style="font-size: 18px; text-align: left; display: block;">Header_Text</strong>
       <img 
-        src="https://cdn.shopify.com/s/files/1/0899/0874/0406/files/Chlorine_Warehouse_FedEx_Ground_Service_Maps.jpg?v=1737040848" 
-        alt="FedEx Ground Transit Info Map" 
+        src="Image_URL" 
+        alt="Iamge_Alt_Text" 
         class="popup-image">
       <br>
       <strong style="font-size: 18px; text-align: left; display: block;">Important Shipping Note:</strong>
-      <p style="font-size: 16px; margin-top: 5px; text-align: left;">Some tablets may arrive cracked due to shipping but will still be fully effective.</p>
+      <p style="font-size: 16px; margin-top: 5px; text-align: left;">Regular_Text</p>
     </div>
   </div>
 </div>
