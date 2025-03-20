@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Carousel</title>
+  <style>
+    .carousel-container {
+      width: 100%;
+      max-width: 100%;
+      margin: auto;
+      text-align: center;
+    }
+    .carousel-container .featured-image {
+      width: 100%;
+      height: 500px;
+      object-fit: cover;
+      object-position: center;
+      cursor: pointer;
+    }
+    @media (max-width: 768px) {
+      .carousel-container .featured-image {
+        height: 300px;
+      }
+    }
+    @media (max-width: 480px) {
+      .carousel-container .featured-image {
+        height: 250px;
+      }
+    }
+    .carousel-container .thumbnail-container {
+      display: flex;
+      justify-content: flex-start;
+      gap: 10px;
+      margin-top: 10px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+      scrollbar-width: thin;
+      max-width: 100%;
+    }
+    .carousel-container .thumbnail {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      object-position: center;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .carousel-container .thumbnail-container::-webkit-scrollbar {
+      height: 8px;
+    }
+    .carousel-container .thumbnail-container::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 4px;
+    }
+    .carousel-container .thumbnail.active {
+      outline: 2px solid blue;
+    }
+    /* Fullscreen image view styling */
+    .fullscreen-view {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .fullscreen-view img {
+      max-width: 90%;
+      max-height: 90%;
+      cursor: zoom-out;
+    }
+  </style>
+</head>
+<body>
+  <div class="carousel-container">
+    <img id="featuredImage" class="featured-image" src="" alt="Product Image" aria-live="polite">
+    <div class="thumbnail-container" id="thumbnailContainer"></div>
+  </div>
+
+  <!-- Fullscreen view -->
+  <div class="fullscreen-view" id="fullscreenView">
+    <img src="" alt="Fullscreen Image" id="fullscreenImage">
+  </div>
+
+  <script>
+    const images = [
+      {
+        src: "Image URL",
+        alt: "Alt Text",
+      },
+      {
+        src: "Image URL",
+        alt: "Alt Text",
+      },
+      {
+        src: "Image URL",
+        alt: "Alt Text",
+      },
+      {
+        src: "Image URL",
+        alt: "Alt Text",
+      },
+      {
+        src: "Image URL",
+        alt: "Alt Text",
+      },
+    ];
+
+    const featuredImage = document.getElementById('featuredImage');
+    const thumbnailContainer = document.getElementById('thumbnailContainer');
+    const fullscreenView = document.getElementById('fullscreenView');
+    const fullscreenImage = document.getElementById('fullscreenImage');
+
+    function populateCarousel() {
+      thumbnailContainer.innerHTML = ''; // Clear existing thumbnails
+      if (images.length > 0) {
+        featuredImage.src = images[0].src;
+        featuredImage.alt = images[0].alt;
+        images.forEach((image, index) => {
+          const thumbnail = document.createElement('img');
+          thumbnail.src = image.src;
+          thumbnail.alt = image.alt;
+          thumbnail.classList.add('thumbnail');
+          if (index === 0) thumbnail.classList.add('active');
+          thumbnail.addEventListener('click', () => updateFeaturedImage(image, index));
+          thumbnailContainer.appendChild(thumbnail);
+        });
+      }
+    }
+
+    function updateFeaturedImage(image, index) {
+      featuredImage.src = image.src;
+      featuredImage.alt = image.alt;
+      document.querySelectorAll('.thumbnail').forEach((thumb, idx) => {
+        thumb.classList.toggle('active', idx === index);
+      });
+    }
+
+    // Show image in fullscreen on featured image click
+    featuredImage.addEventListener('click', () => {
+      fullscreenImage.src = featuredImage.src;
+      fullscreenImage.alt = featuredImage.alt;
+      fullscreenView.style.display = 'flex';
+    });
+
+    // Hide fullscreen view when clicked
+    fullscreenView.addEventListener('click', () => {
+      fullscreenView.style.display = 'none';
+    });
+
+    populateCarousel();
+  </script>
+</body>
+</html>
