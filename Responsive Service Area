@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Areas We Serve</title>
+  <style>
+    .container {
+      width: 100%;
+      max-width: 800px;
+      margin: auto;
+      text-align: center;
+    }
+    .locations {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 10px;
+      margin-top: 20px;
+      list-style: none;
+      padding: 0;
+    }
+    .locations li {
+      background: #f5f5f5;
+      padding: 10px;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+    .locations li a {
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+    }
+    .locations li:hover {
+      background: #ddd;
+    }
+    .toggle-button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      border: none;
+      background: #007BFF;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .toggle-button:hover {
+      background: #0056b3;
+    }
+    .extra-locations {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Areas We Serve</h2>
+    <ul class="locations">
+      <li><a href="#">Green Bay</a></li>
+      <li><a href="#">Madison</a></li>
+      <li><a href="#">Milwaukee</a></li>
+      <li><a href="#">Minneapolis</a></li>
+      <li><a href="#">Omaha</a></li>
+      <li><a href="#">Eau Claire</a></li>
+    </ul>
+    <ul class="locations extra-locations">
+      <li><a href="#">La Crosse</a></li>
+      <li><a href="#">Wausau</a></li>
+      <li><a href="#">Appleton</a></li>
+      <li><a href="#">Rockford</a></li>
+      <li><a href="#">Cedar Rapids</a></li>
+      <li><a href="#">Quad Cities</a></li>
+      <li><a href="#">Des Moines</a></li>
+      <li><a href="#">Peoria</a></li>
+      <li><a href="#">Kansas City</a></li>
+      <li><a href="#">St. Louis</a></li>
+      <li><a href="#">St. Paul</a></li>
+      <li><a href="#">Dayton</a></li>
+      <li><a href="#">Cincinnati</a></li>
+      <li><a href="#">Louisville</a></li>
+      <li><a href="#">Lexington</a></li>
+      <li><a href="#">Charlotte</a></li>
+      <li><a href="#">Raleigh</a></li>
+      <li><a href="#">Sioux City</a></li>
+      <li><a href="#">Columbus</a></li>
+      <li><a href="#">Indianapolis</a></li>
+      <li><a href="#">Pittsburgh</a></li>
+      <li><a href="#">Buffalo</a></li>
+      <li><a href="#">Rochester</a></li>
+      <li><a href="#">Utica</a></li>
+      <li><a href="#">Albany</a></li>
+      <li><a href="#">Syracuse</a></li>
+      <li><a href="#">Sioux Falls</a></li>
+      <li><a href="#">Fargo</a></li>
+    </ul>
+    <button class="toggle-button" onclick="toggleLocations()">All Service Locations</button>
+  </div>
+
+  <script>
+    function toggleLocations() {
+      const extraLocations = document.querySelector('.extra-locations');
+      const button = document.querySelector('.toggle-button');
+      if (extraLocations.style.display === 'none' || extraLocations.style.display === '') {
+        extraLocations.style.display = 'grid';
+        button.textContent = 'Show Less Locations';
+      } else {
+        extraLocations.style.display = 'none';
+        button.textContent = 'All Service Locations';
+      }
+    }
+  </script>
+</body>
+</html>
