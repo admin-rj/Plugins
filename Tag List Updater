@@ -1,0 +1,156 @@
+<?php
+/**
+ * Plugin Name: Tag List Updater
+ * Description: REST endpoint to create tags (if needed) and update a post's tags. Accepts tag names array or comma-separated string.
+ * Version: 1.0
+ * Author: RJ Lucban (provided code)
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * Register REST route
+ */
+add_action( 'rest_api_init', function () {
+	register_rest_route(
+		'tag-api/v1',
+		'/update-post-tags',
+		array(
+			'methods'             => WP_REST_Server::CREATABLE, // POST
+			'callback'            => 'tlu_update_post_tags_handler',
+			'permission_callback' => 'tlu_update_post_tags_permissions_check',
+			'args'                => array(
+				'post_id' => array(
+					'required' => true,
+					'type'     => 'integer',
+				),
+				'tags' => array(
+					'required'    => true,
+					'description' => 'Array of tag names or comma-separated string',
+				),
+			),
+		)
+	);
+} );
+
+/**
+ * Permission callback.
+ * Require capability to edit the specified post (secure).
+ *
+ * @param WP_REST_Request $request
+ * @return bool
+ */
+function tlu_update_post_tags_permissions_check( $request ) {
+	$post_id = isset( $request['post_id'] ) ? intval( $request['post_id'] ) : 0;
+	if ( $post_id <= 0 ) {
+		return false;
+	}
+
+	// Current user must be able to edit this post
+	if ( current_user_can( 'edit_post', $post_id ) ) {
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * Main handler: create missing tags, set post tags, return tag IDs
+ *
+ * @param WP_REST_Request $request
+ * @return WP_REST_Response
+ */
+function tlu_update_post_tags_handler( WP_REST_Request $request ) {
+	$post_id = intval( $request->get_param( 'post_id' ) );
+	$tags_raw = $request->get_param( 'tags' );
+
+	if ( $post_id <= 0 ) {
+		return new WP_REST_Response( array( 'status' => 'error', 'message' => 'Invalid post_id' ), 400 );
+	}
+
+	// Normalize tag list: accept array or comma-separated string
+	if ( is_array( $tags_raw ) ) {
+		$tag_names = $tags_raw;
+	} else {
+		// string
+		$tag_names = array_filter( array_map( 'trim', explode( ',', (string) $tags_raw ) ) );
+	}
+
+	// Sanitize and dedupe
+	$tag_names = array_values( array_unique( array_map( 'sanitize_text_field', $tag_names ) ) );
+
+	if ( empty( $tag_names ) ) {
+		return new WP_REST_Response( array( 'status' => 'error', 'message' => 'No tags provided' ), 400 );
+	}
+
+	$tag_ids = array();
+
+	foreach ( $tag_names as $name ) {
+		if ( $name === '' ) {
+			continue;
+		}
+
+		// Check if term exists by name (case-insensitive)
+		$existing_term = term_exists( $name, 'post_tag' );
+
+		if ( $existing_term && isset( $existing_term['term_id'] ) ) {
+			$tag_ids[] = intval( $existing_term['term_id'] );
+			continue;
+		}
+
+		// Create it
+		$new = wp_insert_term( $name, 'post_tag' );
+
+		if ( is_wp_error( $new ) ) {
+			// If creation fails, skip—collect error info
+			// we don't abort entire process: record null slot for visibility
+			$tag_ids[] = null;
+			continue;
+		}
+
+		if ( isset( $new['term_id'] ) ) {
+			$tag_ids[] = intval( $new['term_id'] );
+		} else {
+			$tag_ids[] = null;
+		}
+	}
+
+	// Filter out nulls for assignment (we'll still return null entries so caller can see)
+	$assignable_ids = array_filter( $tag_ids, function ( $v ) {
+		return is_numeric( $v ) && $v > 0;
+	} );
+
+	// Assign tags to post (replace all tags with this set)
+	if ( ! empty( $assignable_ids ) ) {
+		// wp_set_post_terms returns array of term ids assigned or WP_Error
+		$result = wp_set_post_terms( $post_id, $assignable_ids, 'post_tag', false );
+		if ( is_wp_error( $result ) ) {
+			return new WP_REST_Response( array( 'status' => 'error', 'message' => $result->get_error_message() ), 500 );
+		}
+	} else {
+		// If nothing assignable, clear tags
+		wp_set_post_terms( $post_id, array(), 'post_tag', false );
+	}
+
+	// Build response: map names => ids
+	$response_map = array();
+	foreach ( $tag_names as $index => $name ) {
+		$response_map[] = array(
+			'name' => $name,
+			'id'   => isset( $tag_ids[ $index ] ) ? $tag_ids[ $index ] : null,
+		);
+	}
+
+	return new WP_REST_Response(
+		array(
+			'status'     => 'success',
+			'post_id'    => $post_id,
+			'tag_input'  => $tag_names,
+			'tag_result' => $response_map,
+			'tag_ids'    => $tag_ids, // includes nulls for items that failed to create
+		),
+		200
+	);
+}
